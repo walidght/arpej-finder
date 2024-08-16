@@ -1,7 +1,4 @@
 {
     "builds": [{ "src": "server.js", "use": "@vercel/node" }],
-    "routes": [{ "src": "/(.*)", "dest": "server.js" }],
-    "static": {
-        "include": ["url_id_mapping.txt"]
-    }
+    "routes": [{ "src": "/(.*)", "dest": "server.js" }]
 }
