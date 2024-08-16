@@ -3,25 +3,22 @@ const { format } = require('date-fns');
 const path = require('path');
 const dotenv = require('dotenv');
 dotenv.config();
+const urlIdMapping = require('./urlIdMapping');
 
 const { sendEmail } = require('./email_service');
 const { saveToDb, getFromDb } = require('./db_service');
 const fs = require('fs');
 
-function loadUrlIdMapping(filePath = 'url_id_mapping.txt') {
-    const absolutePath = path.join(__dirname, filePath);
+function loadUrlIdMapping() {
     const urlIdMap = {};
+    const lines = urlIdMapping.trim().split('\n');
 
-    try {
-        const fileData = fs.readFileSync(absolutePath, 'utf-8');
-        fileData.split('\n').forEach((line) => {
-            const [key, value] = line.trim().split(':');
+    lines.forEach((line) => {
+        const [key, value] = line.trim().split(':');
+        if (key && value) {
             urlIdMap[key] = value;
-        });
-    } catch (error) {
-        console.error(`Failed to read file: ${absolutePath}`, error);
-        throw new Error('File not found');
-    }
+        }
+    });
 
     return urlIdMap;
 }
