@@ -1,5 +1,6 @@
 const axios = require('axios');
 const { format } = require('date-fns');
+const path = require('path');
 const dotenv = require('dotenv');
 dotenv.config();
 
@@ -8,12 +9,20 @@ const { saveToDb, getFromDb } = require('./db_service');
 const fs = require('fs');
 
 function loadUrlIdMapping(filePath = 'url_id_mapping.txt') {
+    const absolutePath = path.join(__dirname, filePath);
     const urlIdMap = {};
-    const lines = fs.readFileSync(filePath, 'utf-8').split('\n');
-    lines.forEach((line) => {
-        const [key, value] = line.trim().split(':');
-        urlIdMap[key] = value;
-    });
+
+    try {
+        const fileData = fs.readFileSync(absolutePath, 'utf-8');
+        fileData.split('\n').forEach((line) => {
+            const [key, value] = line.trim().split(':');
+            urlIdMap[key] = value;
+        });
+    } catch (error) {
+        console.error(`Failed to read file: ${absolutePath}`, error);
+        throw new Error('File not found');
+    }
+
     return urlIdMap;
 }
 
