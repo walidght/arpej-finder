@@ -1,16 +1,7 @@
 {
-    "version": 2,
-    "builds": [
-     {
-      "src": "server.js",
-      "use": "@vercel/node",
-      "config": { "includeFiles": ["dist/**"] }
-     }
-    ],
-    "routes": [
-     {
-      "src": "/(.*)",
-      "dest": "server.js"
-     }
-    ]
-   }
+    "builds": [{ "src": "server.js", "use": "@vercel/node" }],
+    "routes": [{ "src": "/(.*)", "dest": "server.js" }],
+    "static": {
+        "include": ["url_id_mapping.txt"]
+    }
+}
